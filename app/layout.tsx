@@ -18,6 +18,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="en">
       <body className={inter.className}>
         <AnimatedBackground />
+<div aria-hidden="true" className="bg-animated" />
+<div aria-hidden="true" className="bg-grain" />
         <SiteNav />
         <main className="relative">{children}</main>
         <Footer />
