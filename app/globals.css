@@ -11,7 +11,9 @@ body { @apply bg-white text-slate-900 antialiased; }
   -webkit-background-clip:text; background-clip:text; color:transparent;
 }
 .container-pad { @apply mx-auto w-full max-w-6xl px-5; }
-.card { @apply rounded-2xl bg-white/80 backdrop-blur border border-slate-200 shadow-soft; }
+.card { 
+  @apply rounded-2xl bg-white/85 backdrop-blur border border-white/15 shadow-soft;
+}
 /* Cinematic background (dark, premium, subtle motion) */
 .bg-animated {
   position: fixed;
