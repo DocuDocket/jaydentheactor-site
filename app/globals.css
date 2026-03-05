@@ -1,0 +1,14 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html, body { height: 100%; }
+body { @apply bg-white text-slate-900 antialiased; }
+::selection { background: rgba(59,130,246,0.18); }
+
+.gradient-text{
+  background: linear-gradient(90deg,#2563eb,#a855f7,#f97316);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.container-pad { @apply mx-auto w-full max-w-6xl px-5; }
+.card { @apply rounded-2xl bg-white/80 backdrop-blur border border-slate-200 shadow-soft; }
