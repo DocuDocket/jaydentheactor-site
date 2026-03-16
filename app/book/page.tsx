@@ -47,6 +47,8 @@ export default function BookPage() {
     }
   }
 
+  const disableFields = status === "sending" || status === "sent";
+
   return (
     <div className="container-pad py-10">
       <SectionTitle
@@ -94,7 +96,8 @@ export default function BookPage() {
             </div>
           ) : null}
 
-          {/* Hide the form after successful submit to prevent duplicates */}
+          {/* DISABLING ELEMENT #1:
+              Hide the form after successful submit to prevent duplicates */}
           {status !== "sent" ? (
             <form className="mt-6 space-y-4" onSubmit={onSubmit}>
               <div>
@@ -102,7 +105,9 @@ export default function BookPage() {
                 <input
                   name="name"
                   required
-                  disabled={status === "sending"}
+                  /* DISABLING ELEMENT #2:
+                     Disable fields while sending (and also if sent, though form hides) */
+                  disabled={disableFields}
                   className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
                   placeholder="Jane Producer"
                 />
@@ -114,7 +119,7 @@ export default function BookPage() {
                   type="email"
                   name="email"
                   required
-                  disabled={status === "sending"}
+                  disabled={disableFields}
                   className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
                   placeholder="jane@productionco.com"
                 />
@@ -126,7 +131,7 @@ export default function BookPage() {
                 </label>
                 <input
                   name="project"
-                  disabled={status === "sending"}
+                  disabled={disableFields}
                   className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
                   placeholder="Project name, role, shoot dates"
                 />
@@ -138,7 +143,7 @@ export default function BookPage() {
                   name="message"
                   required
                   rows={6}
-                  disabled={status === "sending"}
+                  disabled={disableFields}
                   className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
                   placeholder="Hi Michael, we’d like to request a self-tape for Jayden..."
                 />
@@ -146,7 +151,7 @@ export default function BookPage() {
 
               <button
                 type="submit"
-                disabled={status === "sending"}
+                disabled={disableFields}
                 className="w-full rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
               >
                 {status === "sending" ? "Sending..." : "Send Message"}
