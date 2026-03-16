@@ -4,9 +4,9 @@ import { useState } from "react";
 import SectionTitle from "@/components/SectionTitle";
 
 export default function BookPage() {
-  const [status, setStatus] = useState<
-    "idle" | "sending" | "sent" | "error"
-  >("idle");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
   const [error, setError] = useState<string>("");
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
@@ -18,10 +18,10 @@ export default function BookPage() {
     const formData = new FormData(form);
 
     const payload = {
-      name: String(formData.get("name") || ""),
-      email: String(formData.get("email") || ""),
-      project: String(formData.get("project") || ""),
-      message: String(formData.get("message") || ""),
+      name: String(formData.get("name") || "").trim(),
+      email: String(formData.get("email") || "").trim(),
+      project: String(formData.get("project") || "").trim(),
+      message: String(formData.get("message") || "").trim(),
     };
 
     try {
@@ -56,6 +56,7 @@ export default function BookPage() {
       />
 
       <div className="grid gap-6 lg:grid-cols-2">
+        {/* Contact card */}
         <div className="card p-6 sm:p-8">
           <h3 className="text-lg font-semibold">Booking Contact</h3>
           <p className="mt-2 text-slate-600">Michael Eligon (Parent/Guardian)</p>
@@ -79,74 +80,91 @@ export default function BookPage() {
           </div>
         </div>
 
+        {/* Form card */}
         <div className="card p-6 sm:p-8">
           <h3 className="text-lg font-semibold">Send a message</h3>
           <p className="mt-2 text-sm text-slate-600">
             Messages are delivered directly to Michael.
           </p>
 
-          <form className="mt-6 space-y-4" onSubmit={onSubmit}>
-            <div>
-              <label className="text-sm font-medium">Your name</label>
-              <input
-                name="name"
-                required
-                className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Jane Producer"
-              />
+          {/* Success message (no auto-reply emails) */}
+          {status === "sent" ? (
+            <div className="mt-4 rounded-xl border border-green-200 bg-green-50 px-4 py-3 text-sm text-green-800">
+              Thanks for reaching out—someone will contact you within 48 hours.
             </div>
+          ) : null}
 
-            <div>
-              <label className="text-sm font-medium">Your email</label>
-              <input
-                type="email"
-                name="email"
-                required
-                className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="jane@productionco.com"
-              />
-            </div>
+          {/* Hide the form after successful submit to prevent duplicates */}
+          {status !== "sent" ? (
+            <form className="mt-6 space-y-4" onSubmit={onSubmit}>
+              <div>
+                <label className="text-sm font-medium">Your name</label>
+                <input
+                  name="name"
+                  required
+                  disabled={status === "sending"}
+                  className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
+                  placeholder="Jane Producer"
+                />
+              </div>
 
-            <div>
-              <label className="text-sm font-medium">
-                Project / role (optional)
-              </label>
-              <input
-                name="project"
-                className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Project name, role, shoot dates"
-              />
-            </div>
+              <div>
+                <label className="text-sm font-medium">Your email</label>
+                <input
+                  type="email"
+                  name="email"
+                  required
+                  disabled={status === "sending"}
+                  className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
+                  placeholder="jane@productionco.com"
+                />
+              </div>
 
-            <div>
-              <label className="text-sm font-medium">Message</label>
-              <textarea
-                name="message"
-                required
-                rows={6}
-                className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500"
-                placeholder="Hi Michael, we’d like to request a self-tape for Jayden..."
-              />
-            </div>
+              <div>
+                <label className="text-sm font-medium">
+                  Project / role (optional)
+                </label>
+                <input
+                  name="project"
+                  disabled={status === "sending"}
+                  className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
+                  placeholder="Project name, role, shoot dates"
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={status === "sending"}
-              className="w-full rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
-            >
-              {status === "sending" ? "Sending..." : "Send Message"}
-            </button>
+              <div>
+                <label className="text-sm font-medium">Message</label>
+                <textarea
+                  name="message"
+                  required
+                  rows={6}
+                  disabled={status === "sending"}
+                  className="mt-1 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-60"
+                  placeholder="Hi Michael, we’d like to request a self-tape for Jayden..."
+                />
+              </div>
 
-            {status === "sent" ? (
-              <p className="text-sm text-green-700">
-                Sent! We’ll get back to you shortly.
-              </p>
-            ) : null}
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="w-full rounded-xl bg-blue-600 px-5 py-3 text-sm font-medium text-white hover:bg-blue-700 disabled:opacity-60"
+              >
+                {status === "sending" ? "Sending..." : "Send Message"}
+              </button>
 
-            {status === "error" ? (
-              <p className="text-sm text-red-700">{error}</p>
-            ) : null}
-          </form>
+              {status === "error" ? (
+                <p className="text-sm text-red-700">{error}</p>
+              ) : null}
+            </form>
+          ) : null}
+
+          <p className="mt-4 text-xs text-slate-500">
+            Prefer email? You can also contact{" "}
+            <a className="underline" href="mailto:michael@jaydentheactor.com">
+              michael@jaydentheactor.com
+            </a>
+            .
+          </p>
         </div>
       </div>
     </div>
